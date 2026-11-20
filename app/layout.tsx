@@ -1,9 +1,23 @@
 export const metadata = { title: "better-auth-nuvion starter" };
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
     <html lang="en">
-      <body style={{ fontFamily: "system-ui, sans-serif", maxWidth: 640, margin: "2rem auto", padding: "0 1rem", lineHeight: 1.5 }}>{children}</body>
+      <body
+        style={{
+          fontFamily: "system-ui, sans-serif",
+          maxWidth: 640,
+          margin: "2rem auto",
+          padding: "0 1rem",
+          lineHeight: 1.5,
+        }}
+      >
+        {children}
+      </body>
     </html>
   );
 }

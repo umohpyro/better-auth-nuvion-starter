@@ -6,13 +6,13 @@ For splits across a platform, resellers and merchants, fee rules, refunds and th
 
 ## What it shows
 
-| File | What |
-|---|---|
-| `lib/plugins.ts` | The three plugins: `organization()`, `apiKey()`, `nuvion({...})` |
-| `app/api/auth/[...all]/route.ts` | One Better Auth handler. The Nuvion webhook receiver is under it: `/api/auth/nuvion/webhook` |
-| `lib/auth-client.ts` | `nuvionClient()` for typed calls |
-| `app/page.tsx` | Sign in, connect an entity and account (`nuvion.organization.bind`), pay (`nuvion.payments`), list (`nuvion.payments.list`) |
-| `scripts/migrate.mts` | Creates the tables with the app's own Better Auth |
+| File                             | What                                                                                                                        |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
+| `lib/plugins.ts`                 | The three plugins: `organization()`, `apiKey()`, `nuvion({...})`                                                            |
+| `app/api/auth/[...all]/route.ts` | One Better Auth handler. The Nuvion webhook receiver is under it: `/api/auth/nuvion/webhook`                                |
+| `lib/auth-client.ts`             | `nuvionClient()` for typed calls                                                                                            |
+| `app/page.tsx`                   | Sign in, connect an entity and account (`nuvion.organization.bind`), pay (`nuvion.payments`), list (`nuvion.payments.list`) |
+| `scripts/migrate.mts`            | Creates the tables with the app's own Better Auth                                                                           |
 
 ## Run it
 
