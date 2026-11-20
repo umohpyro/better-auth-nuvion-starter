@@ -11,7 +11,7 @@
     "dev": "next dev -p 3000",
     "build": "next build",
     "start": "next start -p 3000",
-    "migrate": "tsx scripts/migrate.mts",
+    "migrate": "tsx --env-file-if-exists=.env.local scripts/migrate.mts",
     "typecheck": "next typegen && tsc --noEmit",
     "lint": "eslint",
     "format": "prettier --write .",
