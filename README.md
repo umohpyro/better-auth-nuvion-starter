@@ -1,0 +1,38 @@
+# better-auth-nuvion starter
+
+The smallest useful app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout, and watch it settle. About 150 lines, one page, no styling to remove.
+
+For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://better-auth-nuvion.umoh.name.ng).
+
+## What it shows
+
+| File | What |
+|---|---|
+| `lib/plugins.ts` | The three plugins: `organization()`, `apiKey()`, `nuvion({...})` |
+| `app/api/auth/[...all]/route.ts` | One Better Auth handler. The Nuvion webhook receiver is under it: `/api/auth/nuvion/webhook` |
+| `lib/auth-client.ts` | `nuvionClient()` for typed calls |
+| `app/page.tsx` | Sign in, connect an entity and account (`nuvion.organization.bind`), pay (`nuvion.payments`), list (`nuvion.payments.list`) |
+| `scripts/migrate.mts` | Creates the tables with the app's own Better Auth |
+
+## Run it
+
+You need a Nuvion account in the test environment with an approved entity and one account.
+
+```bash
+npm install
+cp .env.example .env.local     # set BETTER_AUTH_SECRET, NUVION_API_KEY, NUVION_WEBHOOK_SECRET
+npm run migrate                # creates ./dev.db (SQLite), or uses DATABASE_URL for Postgres
+npm run dev
+```
+
+1. Create a webhook in Nuvion pointing at `https://<your-https-host>/api/auth/nuvion/webhook` (Nuvion only delivers to https, so use a deployed app or a tunnel) and put its signing secret in `NUVION_WEBHOOK_SECRET`.
+2. Open the app, sign up, enter a shop name and your entity and account ids, press **Connect**.
+3. Press **Pay £1.00**, pay in the hosted checkout, come back. The payment goes `pending`, then `received` and `settled` as Nuvion's signed webhooks arrive.
+
+With one organization there is nobody to split with, so the payment settles without legs. Add a parent organization (see the full example) to split it.
+
+## Going live
+
+Set `NUVION_BASE_URL=https://api.nuvion.co` with a production key and secret, and read [Going to production](https://better-auth-nuvion.umoh.name.ng/docs/guides/production) first.
+
+MIT licensed.
