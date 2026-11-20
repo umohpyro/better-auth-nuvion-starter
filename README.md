@@ -2,7 +2,7 @@
 
 The smallest useful app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout, and watch it settle. About 150 lines, one page, no styling to remove.
 
-For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://better-auth-nuvion.umoh.name.ng).
+For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://docs.better-auth-nuvion.umoh.name.ng).
 
 ## What it shows
 
@@ -33,6 +33,6 @@ With one organization there is nobody to split with, so the payment settles with
 
 ## Going live
 
-Set `NUVION_BASE_URL=https://api.nuvion.co` with a production key and secret, and read [Going to production](https://better-auth-nuvion.umoh.name.ng/docs/guides/production) first.
+Set `NUVION_BASE_URL=https://api.nuvion.co` with a production key and secret, and read [Going to production](https://docs.better-auth-nuvion.umoh.name.ng/docs/guides/production) first.
 
 MIT licensed.
