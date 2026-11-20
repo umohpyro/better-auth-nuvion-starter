@@ -54,7 +54,7 @@ export default function Home() {
         }}>
           <h2>1. Connect your Nuvion account</h2>
           <p>The entity and account that receive the money (from your Nuvion dashboard).</p>
-          <p><input name="name" placeholder="Shop name" required /> <input name="entity" placeholder="entity id" required /> <input name="account" placeholder="account id" required /> <button>Connect</button></p>
+          <p><input name="name" placeholder="Shop name" required /> <input name="entity" placeholder="entity id" defaultValue={process.env.NEXT_PUBLIC_DEMO_ENTITY_ID} required /> <input name="account" placeholder="account id" defaultValue={process.env.NEXT_PUBLIC_DEMO_ACCOUNT_ID} required /> <button>Connect</button></p>
         </form>
       ) : (
         <>
