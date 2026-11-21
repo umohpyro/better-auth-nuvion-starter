@@ -1,8 +1,8 @@
 # better-auth-nuvion starter
 
-The smallest useful app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout, and watch it settle. About 150 lines, one page, no styling to remove.
+The smallest useful Next.js app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout, and watch it settle. About 150 lines, one page, no styling to remove.
 
-For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://docs.better-auth-nuvion.umoh.name.ng).
+For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full Next.js example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://docs.better-auth-nuvion.umoh.name.ng).
 
 ## What it shows
 
