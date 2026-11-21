@@ -20,7 +20,7 @@
   },
   "dependencies": {
     "@better-auth/api-key": "^1.7.25",
-    "@umohpyro/better-auth-nuvion": "^0.8.0",
+    "@umohpyro/better-auth-nuvion": "^0.9.0",
     "better-auth": "^1.7.25",
     "next": "^16.4.6",
     "pg": "^8.23.1",
