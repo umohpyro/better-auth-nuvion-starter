@@ -1,18 +1,19 @@
 # better-auth-nuvion starter
 
-The smallest useful Next.js app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout, and watch it settle. About 150 lines, one page, no styling to remove.
+The smallest useful Next.js app on [`@umohpyro/better-auth-nuvion`](https://www.npmjs.com/package/@umohpyro/better-auth-nuvion): sign in, connect your Nuvion account, take a £1.00 payment through hosted checkout or by bank transfer, and watch it settle. About 200 lines, one page, no styling to remove.
 
 For splits across a platform, resellers and merchants, fee rules, refunds and the admin view, see the [full Next.js example](https://github.com/umohpyro/better-auth-nuvion-example) and the [docs](https://docs.better-auth-nuvion.umoh.name.ng).
 
 ## What it shows
 
-| File                             | What                                                                                                                        |
-| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------- |
-| `lib/plugins.ts`                 | The three plugins: `organization()`, `apiKey()`, `nuvion({...})`                                                            |
-| `app/api/auth/[...all]/route.ts` | One Better Auth handler. The Nuvion webhook receiver is under it: `/api/auth/nuvion/webhook`                                |
-| `lib/auth-client.ts`             | `nuvionClient()` for typed calls                                                                                            |
-| `app/page.tsx`                   | Sign in, connect an entity and account (`nuvion.organization.bind`), pay (`nuvion.payments`), list (`nuvion.payments.list`) |
-| `scripts/migrate.mts`            | Creates the tables with the app's own Better Auth                                                                           |
+| File                             | What                                                                                                                                                                                          |
+| -------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `lib/plugins.ts`                 | The three plugins: `organization()`, `apiKey()`, `nuvion({...})`                                                                                                                              |
+| `app/api/auth/[...all]/route.ts` | One Better Auth handler. The Nuvion webhook receiver is under it: `/api/auth/nuvion/webhook`                                                                                                  |
+| `lib/auth-client.ts`             | `nuvionClient()` for typed calls                                                                                                                                                              |
+| `app/page.tsx`                   | Sign in, connect an entity and account (`nuvion.organization.bind`), pay by hosted checkout or by bank transfer (`nuvion.payments`, `method: "bank-transfer"`), list (`nuvion.payments.list`) |
+| `lib/byo.ts`, `app/api/key`      | Optional, for a hosted demo: each visitor brings their own sandbox key (see below). Delete them if you run it with your own key                                                               |
+| `scripts/migrate.mts`            | Creates the tables with the app's own Better Auth                                                                                                                                             |
 
 ## Run it
 
@@ -27,14 +28,28 @@ npm run dev
 
 Using pnpm, yarn or bun? Swap `npm install` for `pnpm install`, `yarn` or `bun install`, and `npm run <script>` for `pnpm <script>`, `yarn <script>` or `bun run <script>`.
 
-1. Create a webhook in Nuvion pointing at `https://<your-https-host>/api/auth/nuvion/webhook` (Nuvion only delivers to https, so use a deployed app or a tunnel) and put its signing secret in `NUVION_WEBHOOK_SECRET`.
+1. Create a webhook in Nuvion pointing at `https://<your-https-host>/api/auth/nuvion/webhook` (Nuvion only delivers to https, so use a deployed app or a tunnel) and put its signing secret in `NUVION_WEBHOOK_SECRET`. Or call `authClient.nuvion.registerWebhook({ organizationId })` once the organization is bound: it registers the webhook with every event the plugin needs and returns the secret once.
 2. Open the app, sign up, enter a shop name and your entity and account ids, press **Connect**.
 3. Press **Pay £1.00**, pay in the hosted checkout, come back. The payment goes `pending`, then `received` and `settled` as Nuvion's signed webhooks arrive.
+4. Or take a **bank transfer**: enter an amount, a currency (the one your account holds) and the payer's name, and press **Show transfer details**. The page shows where to send the money, the exact amount and a reference. There is no checkout page: the payer sends it from their own bank, and the payment settles when Nuvion confirms the deposit. Nobody sends real money in the test environment; to see one settle, send the amount from another account of yours to the details shown, with the reference as the narration ([Verification and status](https://docs.better-auth-nuvion.umoh.name.ng/docs/status) describes how).
+
+Two things to know about bank transfers. The **amount can be a few minor units above the price** (£1.01 for £1.00) when another transfer for the same amount is still open, because a bank that drops the reference is matched by its exact amount. And the **payer's name** (as their bank shows it) is what stops two customers who send the same amount from being mixed up. The page keeps the details only until you reload it; your own app would show them from the order. Read [Accept bank transfers](https://docs.better-auth-nuvion.umoh.name.ng/docs/guides/bank-transfer) before you use it for real.
 
 With one organization there is nobody to split with, so the payment settles without legs. Add a parent organization (see the full example) to split it.
 
+## Hosting it as a demo
+
+Leave `NUVION_API_KEY` unset and the app asks each visitor for **their own** Nuvion sandbox key, so your key is never on the server. It tells them which key to make: a **sandbox** key with the **Operations** role. Owner and Admin keys are refused (they can do more than this needs), and so are Developer keys (read-only) and anything the sandbox does not accept.
+
+- The key is sealed with AES-GCM (using `BETTER_AUTH_SECRET`) in an `httpOnly` cookie in the visitor's browser for eight hours. The server does not store it, and **Remove my key** deletes the cookie.
+- The plugin's calls to Nuvion go through its `fetch` option, which adds the visitor's key and only ever talks to the sandbox host.
+- A visitor's own key has no webhook pointing at your app, so while a payment is `pending` the page asks Nuvion about it every few seconds (`nuvion.payments.refresh`) instead of waiting for one. The ids prefilled by `NEXT_PUBLIC_DEMO_*` are not needed: each visitor enters their own entity and account.
+- It only works against the sandbox (`NUVION_BASE_URL=https://api.nuvion.dev`).
+
+With `NUVION_API_KEY` set, none of this runs.
+
 ## Going live
 
-Set `NUVION_BASE_URL=https://api.nuvion.co` with a production key and secret, and read [Going to production](https://docs.better-auth-nuvion.umoh.name.ng/docs/guides/production) first.
+Set `NUVION_BASE_URL=https://api.nuvion.co` with a production key and secret. Bank transfer is how you collect NGN (an NGN account, a payer sending over NIP). Read [Going to production](https://docs.better-auth-nuvion.umoh.name.ng/docs/guides/production) first.
 
 MIT licensed.
